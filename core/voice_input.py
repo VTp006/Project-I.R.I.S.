@@ -6,15 +6,26 @@ from faster_whisper import WhisperModel
 SAMPLE_RATE = 16000
 RECORD_SECONDS = 5
 
-model = WhisperModel(
-    "small",
-    device="cpu",
-    compute_type="int8"
-)
+model = None
+
+
+def _get_model():
+    global model
+
+    if model is None:
+        model = WhisperModel(
+            "base",
+            device="cpu",
+            compute_type="int8",
+        )
+
+    return model
 
 
 def listen():
-    print("🎤 Listening...")
+    print("Listening...")
+
+    model = _get_model()
 
     audio = sd.rec(
         int(RECORD_SECONDS * SAMPLE_RATE),
