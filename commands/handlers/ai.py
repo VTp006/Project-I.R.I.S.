@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from api.ollama import ask
+from api.gemini import ask
 from commands.executor import CommandResult
 from commands.handlers.files import read_file
 
