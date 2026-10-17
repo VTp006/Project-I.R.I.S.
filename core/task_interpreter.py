@@ -1,7 +1,7 @@
 import json
 import re
 
-from api.ollama import ask
+from api.gemini import ask
 from commands.registry import (
     COMMAND_REGISTRY,
     CommandDomain,

@@ -2,7 +2,6 @@ import sounddevice as sd
 import numpy as np
 from faster_whisper import WhisperModel
 
-
 SAMPLE_RATE = 16000
 RECORD_SECONDS = 5
 
@@ -25,24 +24,29 @@ def _get_model():
 def listen():
     print("Listening...")
 
-    model = _get_model()
-
     audio = sd.rec(
         int(RECORD_SECONDS * SAMPLE_RATE),
         samplerate=SAMPLE_RATE,
         channels=1,
-        dtype="float32"
+        dtype="float32",
+        blocking=True,
     )
-
-    sd.wait()
 
     audio = np.squeeze(audio)
 
-    segments, _ = model.transcribe(
+    print("Processing speech...")
+
+    speech_model = _get_model()
+
+    segments, _ = speech_model.transcribe(
         audio,
-        language="en"
+        language="en",
     )
 
-    text = " ".join(segment.text for segment in segments).strip()
+    text = " ".join(
+        segment.text for segment in segments
+    ).strip()
+
+    print(f"You said: {text}" if text else "No speech detected.")
 
     return text
